@@ -1,0 +1,11 @@
+order_id,user_id,amount,status
+1,101,1200,created
+2,102,2500,paid
+3,103,900,shipped
+4,104,1500,paid
+5,105,3200,delivered
+6,106,1800,created
+7,107,2700,paid
+8,108,1100,shipped
+9,109,4500,delivered
+10,110,800,created

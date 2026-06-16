@@ -1,0 +1,27 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title B2B Price List Generation - C4 Context Diagram
+
+Person(b2b, "B2B Client", "Получает персональный прайс-лист")
+
+System_Boundary(k8s, "Kubernetes Cluster") {
+
+    System(cronjob, "Price List Generator CronJob", "Ежедневно формирует CSV/XLS прайс-листы")
+
+    SystemDb(pg, "PostgreSQL", "products, categories, clients, client_prices")
+
+    System(obs, "Monitoring Stack", "Prometheus + Grafana + ELK")
+}
+
+System_Ext(storage, "Object Storage (S3/MinIO)", "Хранение сформированных файлов")
+
+Rel(cronjob, pg, "Читает данные")
+Rel(cronjob, storage, "Сохраняет CSV/XLS")
+Rel(cronjob, obs, "Отправляет логи и метрики")
+
+Rel(b2b, storage, "Получает прайс-листы")
+
+SHOW_LEGEND()
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(warehouse,"Сотрудник склада")
+Person(devops,"DevOps")
+
+System_Boundary(tradeware,"TradeWare") {
+
+Container(batch,"Spring Batch","Java")
+
+ContainerDb(postgres,"PostgreSQL")
+
+Container(prometheus,"Prometheus")
+Container(grafana,"Grafana")
+
+Container(filebeat,"Filebeat")
+Container(logstash,"Logstash")
+ContainerDb(elastic,"Elasticsearch")
+Container(kibana,"Kibana")
+
+}
+
+Rel(warehouse,batch,"Запуск обработки")
+
+Rel(batch,postgres,"Чтение и запись данных")
+
+Rel(batch,prometheus,"Публикация метрик")
+Rel(prometheus,grafana,"Источник данных")
+
+Rel(batch,filebeat,"Логи приложения")
+Rel(filebeat,logstash,"Передача логов")
+Rel(logstash,elastic,"Индексация")
+Rel(kibana,elastic,"Просмотр логов")
+
+Rel(devops,grafana,"Мониторинг")
+Rel(devops,kibana,"Анализ логов")
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(warehouse,"Сотрудник склада")
+Person(analyst,"Аналитик")
+
+System(erp,"ERP System","Монолитное приложение")
+
+System_Ext(gcs,"Google Cloud Storage","Хранилище файлов")
+System(batch,"Spring Batch ETL","Пакетная обработка")
+SystemDb(pg,"PostgreSQL","Хранилище данных")
+
+Rel(warehouse,erp,"Загружает CSV")
+Rel(erp,gcs,"Сохраняет файл")
+Rel(erp,batch,"Запускает Job")
+Rel(batch,pg,"Читает/записывает данные")
+Rel(analyst,pg,"Получает отчёты")
+
+@enduml

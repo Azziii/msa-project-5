@@ -1,0 +1,21 @@
+groups:
+  - name: batch-processing-alerts
+    rules:
+
+      - alert: ApplicationDown
+        expr: up{job="batch-processing"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Application is down
+          description: batch-processing is unavailable
+
+      - alert: HighMemoryUsage
+        expr: jvm_memory_used_bytes{job="batch-processing"} > 300000000
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: High memory usage
+          description: Application memory exceeds 300 MB

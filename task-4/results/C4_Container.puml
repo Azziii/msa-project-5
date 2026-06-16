@@ -1,0 +1,26 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user,"Сотрудник склада")
+
+System_Boundary(tradeware,"TradeWare") {
+
+Container(erp,"ERP","Java/WildFly")
+Container(batch,"Spring Batch","Java 21")
+
+ContainerDb(products,"Products DB","PostgreSQL")
+ContainerDb(meta,"Batch Metadata","PostgreSQL")
+
+}
+
+System_Ext(gcs,"Google Cloud Storage")
+
+Rel(user,erp,"Загрузка CSV")
+Rel(erp,gcs,"Сохранение файла")
+Rel(erp,batch,"Запуск Job")
+Rel(batch,gcs,"Чтение CSV")
+Rel(batch,products,"Запись данных")
+Rel(batch,meta,"Хранение Job Metadata")
+
+@enduml
